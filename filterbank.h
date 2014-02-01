@@ -18,6 +18,8 @@ class QScrollArea;
 class QScrollBar;
 QT_END_NAMESPACE
 
+QImage IplImageToQImage(const IplImage *img);
+
 class FilterBank : public QMainWindow
 {
     Q_OBJECT

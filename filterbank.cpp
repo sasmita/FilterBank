@@ -3,6 +3,16 @@
 
 #include "filterbank.h"
 
+QImage IplImageToQImage(const IplImage *img)
+{
+    int height = img->height;
+    int width = img->width;
+
+    const uchar *qImageBuffer =(const uchar*)img->imageData;
+    QImage qimg(qImageBuffer, width, height, QImage::Format_RGB888);
+    return qimg.rgbSwapped();
+}
+
 FilterBank::FilterBank()
 {
     imageLabel = new QLabel;
@@ -19,23 +29,27 @@ FilterBank::FilterBank()
     createMenus();
 
     setWindowTitle(tr("Filter Bank"));
-    resize(500, 500);
+    resize(800, 800);
 }
+
 void FilterBank::open()
 {
+    // It opens a dialog box, where we can select a file.
     QString fileName = QFileDialog::getOpenFileName(this,
                                     tr("Open File"), QDir::currentPath());
     if (!fileName.isEmpty()) {
-        QImage image(fileName);
-        if (image.isNull()) {
-            QMessageBox::information(this, tr("Filter Bank"),
-                                     tr("Cannot load %1.").arg(fileName));
-            return;
-        }
 
-        img = cvLoadImage("test.jpg", 1);
+        //Loads the image at a given filename
+        img = cvLoadImage(fileName.toStdString().c_str(), /* Converting to c-str*/
+                          1 /* color image */);
 
-        imageLabel->setPixmap(QPixmap::fromImage(image));
+        // Inorder to display the img in QT, converting back to QImage.
+        QImage qimg = IplImageToQImage(img);
+
+        // Setting the pixels of qimage
+        imageLabel->setPixmap(QPixmap::fromImage(qimg));
+
+        imageLabel->adjustSize();
     }
 }
 
