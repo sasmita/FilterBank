@@ -33,6 +33,8 @@ void FilterBank::open()
             return;
         }
 
+        img = cvLoadImage("test.jpg", 1);
+
         imageLabel->setPixmap(QPixmap::fromImage(image));
     }
 }
