@@ -9,7 +9,6 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/photo/photo.hpp>
 
-
 QT_BEGIN_NAMESPACE
 class QAction;
 class QLabel;

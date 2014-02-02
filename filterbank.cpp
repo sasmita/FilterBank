@@ -97,6 +97,11 @@ void FilterBank::cannyEdge()
 
 void FilterBank::nonLocalMeans()
 {
+    cv::Mat mat = cv::Mat(img, false);
+    cv::fastNlMeansDenoisingColored(mat, mat,5, 5, 7, 21);
+    *img2 = mat;
+
+    showImage(img2);
 }
 
 void FilterBank::denoising1()
