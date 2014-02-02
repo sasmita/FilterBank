@@ -3,6 +3,17 @@
 
 #include "filterbank.h"
 
+void FilterBank::showImage(const IplImage *image)
+{
+    // Inorder to display the img in QT, converting back to QImage.
+    QImage qimg = IplImageToQImage(image);
+
+    // Showing the img via QLabel
+    imageLabel->setPixmap(QPixmap::fromImage(qimg));
+
+    imageLabel->adjustSize();
+}
+
 QImage IplImageToQImage(const IplImage *img)
 {
     int height = img->height;
@@ -29,7 +40,7 @@ FilterBank::FilterBank()
     createMenus();
 
     setWindowTitle(tr("Filter Bank"));
-    resize(800, 800);
+    resize(700, 700);
 }
 
 void FilterBank::open()
@@ -40,21 +51,23 @@ void FilterBank::open()
     if (!fileName.isEmpty()) {
 
         //Loads the image at a given filename
-        img = cvLoadImage(fileName.toStdString().c_str(), /* Converting to c-str*/
+        img = cvLoadImage(fileName.toStdString().c_str(), /* Converting to c string*/
                           1 /* color image */);
 
-        // Inorder to display the img in QT, converting back to QImage.
-        QImage qimg = IplImageToQImage(img);
+        // Creating memory for img2 of same dimensions of img to store the output image(img2)
+        img2 = cvCreateImage(cvSize(img->width, img->height), img->depth, img->nChannels);
 
-        // Setting the pixels of qimage
-        imageLabel->setPixmap(QPixmap::fromImage(qimg));
-
-        imageLabel->adjustSize();
+        showImage(img);
     }
 }
 
 void FilterBank::box()
 {
+    // applying box filter(11 x 11) Kernel to img and storing in img2
+    cvSmooth(img, img2, CV_BLUR, 11, 11);
+
+    // Showing img2 which is the output image
+    showImage(img2);
 }
 
 void FilterBank::gaussian()

@@ -40,6 +40,9 @@ private slots:
 private:
 
     IplImage* img;
+    IplImage* img2;
+
+    void showImage(const IplImage *img);
 
     void createActions();
     void createMenus();
