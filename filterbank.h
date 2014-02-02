@@ -8,6 +8,9 @@
 #include <opencv2/gpu/gpu.hpp>
 #include <opencv2/core/core.hpp>
 #include <opencv2/photo/photo.hpp>
+#include <vector>
+
+#include "DCTdenoising.h"
 
 QT_BEGIN_NAMESPACE
 class QAction;
