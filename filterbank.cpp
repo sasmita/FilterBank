@@ -72,21 +72,40 @@ void FilterBank::box()
 
 void FilterBank::gaussian()
 {
+    cvSmooth(img, img2, CV_GAUSSIAN, 11, 11);
+
+    showImage(img2);
 }
 
 void FilterBank::median()
 {
+    cvSmooth(img, img2, CV_MEDIAN, 11, 11);
+    
+    showImage(img2);
 }
 
 void FilterBank::bilateral()
-{
+{ 
+    cvSmooth(img, img2, CV_BILATERAL, 21, 21, 150.0f, 150.0f);
+ 
+    showImage(img2);
 }
 
 void FilterBank::cannyEdge()
 {
 }
 
+void FilterBank::nonLocalMeans()
+{
+}
 
+void FilterBank::denoising1()
+{
+}
+
+void FilterBank::denoising2()
+{
+}
 
 void FilterBank::createActions()
 {
@@ -118,6 +137,18 @@ void FilterBank::createActions()
     cannyEdgeAct->setShortcut(tr("Ctrl+C"));
     connect(cannyEdgeAct, SIGNAL(triggered()), this, SLOT(cannyEdge()));
 
+    nonLocalMeansAct = new QAction(tr("&Non-local means"), this);
+    nonLocalMeansAct->setShortcut(tr("Ctrl+N"));
+    connect(nonLocalMeansAct, SIGNAL(triggered()), this, SLOT(nonLocalMeans()));
+
+    denoising1Act = new QAction(tr("&De-noising1"), this);
+    denoising1Act->setShortcut(tr("Ctrl+D1"));
+    connect(denoising1Act, SIGNAL(triggered()), this, SLOT(denoising1()));
+
+    denoising2Act = new QAction(tr("&De-noising2"), this);
+    denoising2Act->setShortcut(tr("Ctrl+D2"));
+    connect(denoising2Act, SIGNAL(triggered()), this, SLOT(denoising2()));
+
 }
 
 
@@ -134,6 +165,10 @@ void FilterBank::createMenus()
     filterMenu->addAction(medianAct);
     filterMenu->addAction(bilateralAct);
     filterMenu->addAction(cannyEdgeAct);
+    filterMenu->addAction(nonLocalMeansAct);
+    filterMenu->addAction(denoising1Act);
+    filterMenu->addAction(denoising2Act);
+
 
     menuBar()->addMenu(fileMenu);
     menuBar()->addMenu(filterMenu);

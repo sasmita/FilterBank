@@ -35,6 +35,9 @@ private slots:
     void median();
     void bilateral();
     void cannyEdge();
+    void nonLocalMeans();
+    void denoising1();
+    void denoising2();
 
 
 private:
@@ -59,6 +62,10 @@ private:
     QAction *medianAct;
     QAction *bilateralAct;
     QAction *cannyEdgeAct;
+    QAction *nonLocalMeansAct;
+    QAction *denoising1Act;
+    QAction *denoising2Act;
+
 
     QMenu *fileMenu;
     QMenu *filterMenu;
