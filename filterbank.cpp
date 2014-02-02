@@ -93,6 +93,14 @@ void FilterBank::bilateral()
 
 void FilterBank::cannyEdge()
 {
+    IplImage* img3 = cvCreateImage(cvSize(img->width, img->height), img->depth, 1);
+    cvCvtColor(img, img3, CV_RGB2GRAY);
+    cvCanny( img3, img3, 10, 100, 3 );
+    cvCvtColor(img3, img2, CV_GRAY2RGB);
+
+    showImage(img2);
+
+    cvReleaseImage(&img3);
 }
 
 void FilterBank::nonLocalMeans()
