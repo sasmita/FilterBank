@@ -44,14 +44,18 @@ private:
     IplImage* img;
     IplImage* img2;
 
-    void showImage(const IplImage *img);
+    void showImage(const IplImage *image);
+    void showImage2(const IplImage *image);
 
     void createActions();
     void createMenus();
     void adjustScrollBar(QScrollBar *scrollBar, double factor);
 
     QLabel *imageLabel;
+    QLabel *imageLabel2; // To diaplay output image
+
     QScrollArea *scrollArea;
+    QScrollArea *scrollArea2;
 
     QAction *openAct;
     QAction *exitAct;
@@ -64,7 +68,6 @@ private:
     QAction *nonLocalMeansAct;
     QAction *denoising1Act;
     QAction *denoising2Act;
-
 
     QMenu *fileMenu;
     QMenu *filterMenu;

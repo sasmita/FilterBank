@@ -14,6 +14,18 @@ void FilterBank::showImage(const IplImage *image)
     imageLabel->adjustSize();
 }
 
+void FilterBank::showImage2(const IplImage *image)
+{
+    // Inorder to display the img in QT, converting back to QImage.
+    QImage qimg = IplImageToQImage(image);
+
+    // Showing the img via QLabel
+    imageLabel2->setPixmap(QPixmap::fromImage(qimg));
+
+    imageLabel2->adjustSize();
+}
+
+
 QImage IplImageToQImage(const IplImage *img)
 {
     int height = img->height;
@@ -31,16 +43,32 @@ FilterBank::FilterBank()
     imageLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
     imageLabel->setScaledContents(true);
 
+    imageLabel2 = new QLabel;
+    imageLabel2->setBackgroundRole(QPalette::Base);
+    imageLabel2->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    imageLabel2->setScaledContents(true);
+
     scrollArea = new QScrollArea;
     scrollArea->setBackgroundRole(QPalette::Dark);
     scrollArea->setWidget(imageLabel);
-    setCentralWidget(scrollArea);
+
+    scrollArea2= new QScrollArea;
+    scrollArea2->setBackgroundRole(QPalette::Dark);
+    scrollArea2->setWidget(imageLabel2);
+
+    // Do the layout
+    QWidget *centralWidget = new QWidget;
+    QHBoxLayout *layout = new QHBoxLayout(centralWidget);
+    layout->addWidget(scrollArea);
+    layout->addWidget(scrollArea2);
+
+    setCentralWidget(centralWidget);
 
     createActions();
     createMenus();
 
     setWindowTitle(tr("Filter Bank"));
-    resize(700, 700);
+    resize(1400, 800);
 }
 
 void FilterBank::open()
@@ -67,28 +95,34 @@ void FilterBank::box()
     cvSmooth(img, img2, CV_BLUR, 11, 11);
 
     // Showing img2 which is the output image
-    showImage(img2);
+    showImage2(img2);
 }
 
 void FilterBank::gaussian()
 {
     cvSmooth(img, img2, CV_GAUSSIAN, 11, 11);
 
-    showImage(img2);
+    showImage2(img2);
 }
 
 void FilterBank::median()
 {
     cvSmooth(img, img2, CV_MEDIAN, 11, 11);
     
-    showImage(img2);
+    showImage2(img2);
 }
 
 void FilterBank::bilateral()
 { 
-    cvSmooth(img, img2, CV_BILATERAL, 21, 21, 150.0f, 150.0f);
+    try {
+        cvSmooth(img, img2, CV_BILATERAL, 21, 21, 150.0f, 150.0f);
+    }
+    catch (cv::Exception e)
+    {
+        std::cout << e.what();
+    }
  
-    showImage(img2);
+    showImage2(img2);
 }
 
 void FilterBank::cannyEdge()
@@ -98,7 +132,7 @@ void FilterBank::cannyEdge()
     cvCanny( img3, img3, 10, 100, 3 );
     cvCvtColor(img3, img2, CV_GRAY2RGB);
 
-    showImage(img2);
+    showImage2(img2);
 
     cvReleaseImage(&img3);
 }
@@ -109,7 +143,7 @@ void FilterBank::nonLocalMeans()
     cv::fastNlMeansDenoisingColored(mat, mat,5, 5, 7, 21);
     *img2 = mat;
 
-    showImage(img2);
+    showImage2(img2);
 }
 
 void FilterBank::denoising1()
@@ -164,7 +198,6 @@ void FilterBank::createActions()
 
 }
 
-
 void FilterBank::createMenus()
 {
     fileMenu = new QMenu(tr("&File"), this);
@@ -181,7 +214,6 @@ void FilterBank::createMenus()
     filterMenu->addAction(nonLocalMeansAct);
     filterMenu->addAction(denoising1Act);
     filterMenu->addAction(denoising2Act);
-
 
     menuBar()->addMenu(fileMenu);
     menuBar()->addMenu(filterMenu);
