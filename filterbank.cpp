@@ -33,7 +33,7 @@ QImage IplImageToQImage(const IplImage *img)
 
     const uchar *qImageBuffer =(const uchar*)img->imageData;
     QImage qimg(qImageBuffer, width, height, QImage::Format_RGB888);
-    return qimg.rgbSwapped();
+    return qimg;//.rgbSwapped();
 }
 
 FilterBank::FilterBank()
@@ -74,7 +74,7 @@ FilterBank::FilterBank()
 void FilterBank::open()
 {
     // It opens a dialog box, where we can select a file.
-    QString fileName = QFileDialog::getOpenFileName(this,
+    fileName = QFileDialog::getOpenFileName(this,
                                     tr("Open File"), QDir::currentPath());
     if (!fileName.isEmpty()) {
 
@@ -151,20 +151,33 @@ void FilterBank::denoising1()
     // DCT Image Denoising
     // http://www.ipol.im/pub/art/2011/ys-dct/
 
+    float * iarr1;
+    size_t w1, h1, c1;
+    if (NULL == (iarr1 = io_png_read_f32(fileName.toStdString().c_str(), &w1, &h1, &c1))) {
+        std::cerr << "Unable to load image file " << "input.png" << std::endl;
+        return;
+    }
+    std::vector<float> npixels(iarr1, iarr1 + w1 * h1 * c1);
+    free(iarr1);
+
+    /*
     size_t w1 = img->width;
     size_t h1 = img->height;
     size_t c1 = img->nChannels;
+    */
 
-    float sigma = 23;
+    float sigma = 15;
 
-    int flag_dct16x16 = 0;
+    int flag_dct16x16 = 1;
 
+    /*
     // npixels : noisy input pixels (conver from iplImg (img) to std::vector<float>)
     float *narray = new float[w1*h1*c1];
-    for (int i = 0; i < w1*h1*c1; i++)
-        narray[i] = (float) img->imageData[i];
+    for (size_t i = 0; i < w1*h1*c1; i++)
+        narray[i] = (float) (img->imageData[i]);
+    */
 
-    std::vector<float> npixels(narray, narray+w1*h1*c1);
+    //std::vector<float> npixels(narray, narray+w1*h1*c1);
     //npixels.resize(w1*h1*c1);
     
     std::vector<float> opixels;
@@ -173,8 +186,23 @@ void FilterBank::denoising1()
     DCTdenoising(npixels, opixels, w1, h1, c1, sigma, flag_dct16x16);
 
     //float *out = new float[w1*h1*c1];
-    for (int i = 0; i < w1*h1*c1; i++)
-        img2->imageData[i] = (char) opixels[i];
+    /*
+    for (size_t i = 0; i < w1*h1*c1; i++)
+        img2->imageData[i] = (unsigned char) (opixels[i]);
+    */
+
+    for (size_t i = 0; i < w1; i++)
+        for (size_t j = 0; j < h1; j++)
+            for(size_t k = 0; k < c1; k++)
+            {
+                img2->imageData[ (j*w1 + i)*c1 + k] = (unsigned char) opixels[k*w1*h1 + (j*w1 + i)];
+            }
+
+    float *out = new float[w1*h1*c1];
+    // Save output denoised image
+    for (size_t i = 0; i < w1*h1*c1; i++)
+        out[i] = opixels[i];
+    io_png_write_f32("output.png", out, w1, h1, c1);
 
     showImage2(img2);
     //img2->imageData = (char*) out;

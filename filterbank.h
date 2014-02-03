@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "DCTdenoising.h"
+#include "io_png.h"
 
 QT_BEGIN_NAMESPACE
 class QAction;
@@ -53,6 +54,8 @@ private:
     void createActions();
     void createMenus();
     void adjustScrollBar(QScrollBar *scrollBar, double factor);
+
+    QString fileName;
 
     QLabel *imageLabel;
     QLabel *imageLabel2; // To diaplay output image
