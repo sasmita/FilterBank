@@ -39,7 +39,7 @@ private slots:
     void bilateral();
     void cannyEdge();
     void nonLocalMeans();
-    void denoising1();
+    void dctDenoising();
     void denoising2();
 
 
@@ -72,7 +72,7 @@ private:
     QAction *bilateralAct;
     QAction *cannyEdgeAct;
     QAction *nonLocalMeansAct;
-    QAction *denoising1Act;
+    QAction *dctDenoisingAct;
     QAction *denoising2Act;
 
     QMenu *fileMenu;

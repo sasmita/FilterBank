@@ -1,8 +1,8 @@
 QT += widgets
 
-INCLUDEPATH += /opt/local/include/
+INCLUDEPATH += /usr/local/include/
 
-LIBS += -L/opt/local/lib/ \
+LIBS += -L/usr/local/lib/ \
      -lopencv_core \
      -lopencv_imgproc \
      -lopencv_features2d \

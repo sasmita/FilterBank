@@ -146,7 +146,7 @@ void FilterBank::nonLocalMeans()
     showImage2(img2);
 }
 
-void FilterBank::denoising1()
+void FilterBank::dctDenoising()
 {
     // DCT Image Denoising
     // http://www.ipol.im/pub/art/2011/ys-dct/
@@ -229,9 +229,9 @@ void FilterBank::createActions()
     nonLocalMeansAct->setShortcut(tr("Ctrl+N"));
     connect(nonLocalMeansAct, SIGNAL(triggered()), this, SLOT(nonLocalMeans()));
 
-    denoising1Act = new QAction(tr("&De-noising1"), this);
-    denoising1Act->setShortcut(tr("Ctrl+D1"));
-    connect(denoising1Act, SIGNAL(triggered()), this, SLOT(denoising1()));
+    dctDenoisingAct = new QAction(tr("&DCT denoising"), this);
+    dctDenoisingAct->setShortcut(tr("Ctrl+D1"));
+    connect(dctDenoisingAct, SIGNAL(triggered()), this, SLOT(dctDenoising()));
 
     denoising2Act = new QAction(tr("&De-noising2"), this);
     denoising2Act->setShortcut(tr("Ctrl+D2"));
@@ -253,7 +253,7 @@ void FilterBank::createMenus()
     filterMenu->addAction(bilateralAct);
     filterMenu->addAction(cannyEdgeAct);
     filterMenu->addAction(nonLocalMeansAct);
-    filterMenu->addAction(denoising1Act);
+    filterMenu->addAction(dctDenoisingAct);
     filterMenu->addAction(denoising2Act);
 
     menuBar()->addMenu(fileMenu);
