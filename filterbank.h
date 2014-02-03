@@ -43,7 +43,7 @@ private slots:
     void cannyEdge();
     void nonLocalMeans();
     void dctDenoising();
-    void denoising2();
+    void nlBayesDenoising();
 
 
 private:
@@ -76,7 +76,7 @@ private:
     QAction *cannyEdgeAct;
     QAction *nonLocalMeansAct;
     QAction *dctDenoisingAct;
-    QAction *denoising2Act;
+    QAction *nlBayesDenoisingAct;
 
     QMenu *fileMenu;
     QMenu *filterMenu;

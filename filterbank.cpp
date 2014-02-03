@@ -191,7 +191,7 @@ void FilterBank::dctDenoising()
     */
 }
 
-void FilterBank::denoising2()
+void FilterBank::nlBayesDenoising()
 {
     // Nl Bayes Denoising
     // http://www.ipol.im/pub/art/2013/16/
@@ -263,9 +263,9 @@ void FilterBank::createActions()
     dctDenoisingAct->setShortcut(tr("Ctrl+D1"));
     connect(dctDenoisingAct, SIGNAL(triggered()), this, SLOT(dctDenoising()));
 
-    denoising2Act = new QAction(tr("&De-noising2"), this);
-    denoising2Act->setShortcut(tr("Ctrl+D2"));
-    connect(denoising2Act, SIGNAL(triggered()), this, SLOT(denoising2()));
+    nlBayesDenoisingAct = new QAction(tr("&NL-Bayes denoising"), this);
+    nlBayesDenoisingAct->setShortcut(tr("Ctrl+D2"));
+    connect(nlBayesDenoisingAct, SIGNAL(triggered()), this, SLOT(nlBayesDenoising()));
 
 }
 
@@ -284,7 +284,7 @@ void FilterBank::createMenus()
     filterMenu->addAction(cannyEdgeAct);
     filterMenu->addAction(nonLocalMeansAct);
     filterMenu->addAction(dctDenoisingAct);
-    filterMenu->addAction(denoising2Act);
+    filterMenu->addAction(nlBayesDenoisingAct);
 
     menuBar()->addMenu(fileMenu);
     menuBar()->addMenu(filterMenu);
