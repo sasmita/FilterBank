@@ -148,7 +148,6 @@ void FilterBank::nonLocalMeans()
 
 void FilterBank::denoising1()
 {
-    /*
     // DCT Image Denoising
     // http://www.ipol.im/pub/art/2011/ys-dct/
 
@@ -160,16 +159,27 @@ void FilterBank::denoising1()
 
     int flag_dct16x16 = 0;
 
-    std::vector<float> npixels;
-    npixels.resize(w1*h1*c1);
+    // npixels : noisy input pixels (conver from iplImg (img) to std::vector<float>)
+    float *narray = new float[w1*h1*c1];
+    for (int i = 0; i < w1*h1*c1; i++)
+        narray[i] = (float) img->imageData[i];
+
+    std::vector<float> npixels(narray, narray+w1*h1*c1);
+    //npixels.resize(w1*h1*c1);
+    
     std::vector<float> opixels;
     opixels.resize(w1*h1*c1);
 
-    // npixels : noisy input pixels (conver from iplImg (img) to std::vector<float>)
     DCTdenoising(npixels, opixels, w1, h1, c1, sigma, flag_dct16x16);
 
+    //float *out = new float[w1*h1*c1];
+    for (int i = 0; i < w1*h1*c1; i++)
+        img2->imageData[i] = (char) opixels[i];
+
+    showImage2(img2);
+    //img2->imageData = (char*) out;
+
     // convert opixels to iplImg (into img2)
-    */
 }
 
 void FilterBank::denoising2()
