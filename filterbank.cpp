@@ -193,6 +193,36 @@ void FilterBank::dctDenoising()
 
 void FilterBank::denoising2()
 {
+    // Nl Bayes Denoising
+    // http://www.ipol.im/pub/art/2013/16/
+
+    //! Declarations
+    vector<float> im, imNoisy, imBasic, imFinal;//, imDiff;
+    // vector<float> imBias, imBasicBias, imDiffBias;
+    ImageSize imSize;
+
+    if(loadImage(fileName.toStdString().c_str(), imNoisy, imSize, 1) != EXIT_SUCCESS) {
+    return;
+    }
+
+    runNlBayes(imNoisy, imBasic, imFinal, imSize, 1, 1, 15, 1);
+
+    size_t w1 = imSize.width;
+    size_t h1 = imSize.height;
+    size_t c1 = imSize.nChannels;
+
+    // Converting png ordering to IplImage ordering
+    for (size_t i = 0; i < w1; i++)
+        for (size_t j = 0; j < h1; j++)
+            for(size_t k = 0; k < c1; k++)
+            {
+                float pixel = imFinal[(2-k)*w1*h1 + (j*w1 + i)];
+                pixel = pixel > 255 ? 255 : pixel;
+                pixel = pixel < 0 ? 0 : pixel;
+                img2->imageData[ (j*w1 + i)*c1 + k] = (unsigned char) pixel;
+            }
+
+    showImage2(img2);
 }
 
 void FilterBank::createActions()

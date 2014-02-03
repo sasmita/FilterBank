@@ -6,7 +6,7 @@
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-    FilterBank filterBank;
-    filterBank.show();
+    FilterBank fb;
+    fb.show();
     return app.exec();
 }

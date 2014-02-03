@@ -13,6 +13,9 @@
 #include "DCTdenoising.h"
 #include "io_png.h"
 
+#include "LibMatrix.h"
+#include "NlBayes.h"
+
 QT_BEGIN_NAMESPACE
 class QAction;
 class QLabel;
