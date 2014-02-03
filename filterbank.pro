@@ -2,7 +2,7 @@ QT += widgets
 
 INCLUDEPATH += /usr/local/include/
 
-LIBS += DCTdenoising.o DCT2D.o DCT2D16x16.o mt19937ar.o -lm \
+LIBS += \ #DCTdenoising.o DCT2D.o DCT2D16x16.o mt19937ar.o -lm \
      -L/usr/local/lib/ \
      -lopencv_core \
      -lopencv_imgproc \

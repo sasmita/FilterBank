@@ -68,7 +68,7 @@ FilterBank::FilterBank()
     createMenus();
 
     setWindowTitle(tr("Filter Bank"));
-    resize(1400, 800);
+    resize(635, 330);
 }
 
 void FilterBank::open()
@@ -148,6 +148,7 @@ void FilterBank::nonLocalMeans()
 
 void FilterBank::denoising1()
 {
+    /*
     // DCT Image Denoising
     // http://www.ipol.im/pub/art/2011/ys-dct/
 
@@ -168,6 +169,7 @@ void FilterBank::denoising1()
     DCTdenoising(npixels, opixels, w1, h1, c1, sigma, flag_dct16x16);
 
     // convert opixels to iplImg (into img2)
+    */
 }
 
 void FilterBank::denoising2()
